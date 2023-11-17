@@ -1,6 +1,6 @@
-﻿namespace LogConverter.Models;
+﻿namespace LogConverter.Entities;
 
-public abstract class BaseModel
+public abstract class EntityBase
 {
     public int ResponseSize { get; set; }
     public int StatusCode { get; set; }
