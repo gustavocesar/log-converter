@@ -1,4 +1,4 @@
-﻿namespace LogConverter.Entities;
+﻿namespace LogConverter.Domain.Entities;
 
 public abstract class EntityBase
 {
