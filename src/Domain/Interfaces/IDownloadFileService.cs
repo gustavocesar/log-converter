@@ -2,4 +2,5 @@
 
 public interface IDownloadFileService
 {
+    Task<string> GetFileContents(string url);
 }
