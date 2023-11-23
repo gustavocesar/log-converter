@@ -6,32 +6,31 @@ public class ConvertFormatWorker : BackgroundService
 {
     private readonly ILogger<ConvertFormatWorker> _logger;
     private readonly IHostApplicationLifetime _hostApplicationLifetime;
-    private readonly IConvertMinhaCdnToAgoraUseCase _useCase;
-    private readonly IList<string> _arg;
+    private readonly IConvertMinhaCdnToAgoraUseCase _minhaCdnToAgoraUseCase;
+    private readonly IList<string> _arguments;
 
     public ConvertFormatWorker(ILogger<ConvertFormatWorker> logger,
         IHostApplicationLifetime hostApplicationLifetime,
-        IConvertMinhaCdnToAgoraUseCase useCase,
-        IList<string> arg
+        IConvertMinhaCdnToAgoraUseCase minhaCdnToAgoraUseCase,
+        IList<string> arguments
     )
     {
         _logger = logger;
         _hostApplicationLifetime = hostApplicationLifetime;
-        _useCase = useCase;
-        _arg = arg;
+        _minhaCdnToAgoraUseCase = minhaCdnToAgoraUseCase;
+        _arguments = arguments;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try
         {
-            if (!_arg.Any() || _arg.Count < 2)
-                throw new Exception("Please provide URL (sourceUrl) and a destination file (targetPath) as arguments.");
+            ThrowIfInvalidArguments();
 
-            var sourceUrl = _arg.FirstOrDefault() ?? string.Empty;
-            var targetPath = _arg.LastOrDefault() ?? string.Empty;
+            var sourceUrl = _arguments.FirstOrDefault(string.Empty);
+            var targetPath = _arguments.LastOrDefault(string.Empty);
 
-            await _useCase.ExecuteAsync(sourceUrl, targetPath);
+            await _minhaCdnToAgoraUseCase.ExecuteAsync(sourceUrl, targetPath);
         }
         catch (Exception e)
         {
@@ -41,5 +40,11 @@ public class ConvertFormatWorker : BackgroundService
         {
             _hostApplicationLifetime.StopApplication();
         }
+    }
+
+    private void ThrowIfInvalidArguments()
+    {
+        if (_arguments.Count is not 2)
+            throw new Exception("Invalid arguments.");
     }
 }
