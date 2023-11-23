@@ -31,7 +31,7 @@ public class ConvertFormatWorker : BackgroundService
             var sourceUrl = _arg.FirstOrDefault() ?? string.Empty;
             var targetPath = _arg.LastOrDefault() ?? string.Empty;
 
-            //TODO
+            await _useCase.ExecuteAsync(sourceUrl, targetPath);
         }
         catch (Exception e)
         {
@@ -41,7 +41,5 @@ public class ConvertFormatWorker : BackgroundService
         {
             _hostApplicationLifetime.StopApplication();
         }
-
-        await Task.CompletedTask;
     }
 }
