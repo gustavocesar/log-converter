@@ -18,7 +18,7 @@ IHost host = Host.CreateDefaultBuilder(args)
             )
         );
 
-        services.AddTransient<IDownloadFileService, DownloadFileService>();
+        services.AddTransient<IFileService, FileService>();
         services.AddTransient<IConvertMinhaCdnToAgoraUseCase, ConvertMinhaCdnToAgoraUseCase>();
     })
     .Build();
