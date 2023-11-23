@@ -7,7 +7,16 @@ using LogConverter.Workers;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddHostedService<ConvertFormatWorker>();
+        var listArgs = new List<string>(args);
+
+        services.AddHostedService(serviceProvider =>
+            new ConvertFormatWorker(
+                serviceProvider.GetService<ILogger<ConvertFormatWorker>>()!,
+                serviceProvider.GetService<IHostApplicationLifetime>()!,
+                serviceProvider.GetService<IConvertMinhaCdnToAgoraUseCase>()!,
+                listArgs
+            )
+        );
 
         services.AddTransient<IDownloadFileService, DownloadFileService>();
         services.AddTransient<IConvertMinhaCdnToAgoraUseCase, ConvertMinhaCdnToAgoraUseCase>();
